@@ -1,0 +1,17 @@
+.inputHome {
+  border-color: var(--red);
+  transition: 0.15s ease-in-out;
+
+  p {
+    color: var(--pink);
+  }
+
+  input {
+    border-color: var(--pink);
+    outline-color: var(--lightRed);
+  }
+
+  &:hover {
+    border-color: var(--lightRed);
+  }
+}

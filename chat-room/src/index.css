@@ -1,16 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --black: rgb(20, 20, 20);
+  --black: rgb(25, 25, 25);
   --white: rgb(250, 250, 250);
   --gray: rgb(75, 75, 75);
   --red: rgb(184, 46, 46);
   --pink: rgb(233, 145, 145);
+  --lightRed: rgb(241, 54, 54);
+}
+
+body {
+  background-color: var(--black);
 }
 
 * {
   font-family: "Poppins", Arial, Helvetica, sans-serif;
-  background-color: var(--black);
   color: var(--white);
   box-sizing: border-box;
 }
