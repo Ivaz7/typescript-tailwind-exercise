@@ -62,6 +62,24 @@ const InputHome = () => {
     })
   }
 
+  const handleFocus = (inx: number) => {
+    setCliked(prev => {
+      const updated = [...prev];
+      updated[inx] = true;
+      return updated;
+    });
+  };
+  
+  const handleBlur = (inx: number) => {
+    setCliked(prev => {
+      const updated = [...prev];
+      if (valueInput[inx] === "") {
+        updated[inx] = false;
+      }
+      return updated;
+    });
+  };
+
   const renderInput = inputName.map((val: string, inx: number) => {
     return (
       <div 
@@ -84,7 +102,15 @@ const InputHome = () => {
           {val}
         </p>
 
-        <input value={valueInput[inx]} onChange={(e) => handleChange(inx, e)} ref={(el) => {inputRef.current[inx] = el}} className='w-full py-1 px-2 focus:outline-none' type="text" />
+        <input 
+          value={valueInput[inx]} 
+          onChange={(e) => handleChange(inx, e)} 
+          onFocus={() => handleFocus(inx)}
+          onBlur={() => handleBlur(inx)}
+          ref={(el) => {inputRef.current[inx] = el}} 
+          className='w-full py-1 px-2 focus:outline-none' 
+          type="text" 
+        />
       </div>
     )
   })
