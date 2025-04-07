@@ -27,44 +27,30 @@ const InputHome = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [valueInput]);
-  
 
-  interface Input {
-    inputName: string,
-    type: string,
-  }
-
-  const inputName: Input[] = [
-    {
-      inputName: "Enter Your Username",
-      type: "text",
-    },
-    {
-      inputName: "Create or Enter ID",
-      type: "text",
-    }
-  ];
+  const inputName: string[] = ["Enter Your Username", "Create or Enter ID"];
   
   const handleClick = (inx: number) => {
     setCliked(prev => {
       const updated = [...prev];
 
-      if (updated[inx] === true) {
-        return prev;
-      }
-
-      updated[inx] = !updated[inx];
-
-      if (inx === 0 && valueInput[0] !== "") {
-        updated[1] = false;
-      } else if (inx === 1 && valueInput[1] !== ""){
-        updated[0] = false;
+      for (let i = 0; i < updated.length; i++) {
+        if (inx === i) {
+          if (updated[inx] !== true) { 
+            updated[inx] = !updated[inx];
+          }
+        } else {
+          if (valueInput[i] === "") {
+            updated[i] = false;
+          }
+        }
       }
 
       return updated;
     });
     inputRef.current[inx]?.focus();
   }
+
 
   const handleChange = (inx: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -76,9 +62,7 @@ const InputHome = () => {
     })
   }
 
-  const renderInput = inputName.map((val: Input, inx: number) => {
-    const { inputName, type } = val;
-
+  const renderInput = inputName.map((val: string, inx: number) => {
     return (
       <div 
         key={inx}
@@ -97,10 +81,10 @@ const InputHome = () => {
               : "top-1/2 -translate-y-1/2 text-base sm:text-lg md:text-xl lg:text-2xl"
             }`}
         >
-          {inputName}
+          {val}
         </p>
 
-        <input value={valueInput[inx]} onChange={(e) => handleChange(inx, e)} ref={(el) => {inputRef.current[inx] = el}} className='w-full py-1 px-2 focus:outline-none' type={type} />
+        <input value={valueInput[inx]} onChange={(e) => handleChange(inx, e)} ref={(el) => {inputRef.current[inx] = el}} className='w-full py-1 px-2 focus:outline-none' type="text" />
       </div>
     )
   })
