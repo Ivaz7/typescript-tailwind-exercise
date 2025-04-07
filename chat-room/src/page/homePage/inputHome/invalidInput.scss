@@ -1,0 +1,11 @@
+.invalidContainer {
+  max-width: 90vw;
+}
+
+.cancelBtn {
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--gray);
+  }
+}
