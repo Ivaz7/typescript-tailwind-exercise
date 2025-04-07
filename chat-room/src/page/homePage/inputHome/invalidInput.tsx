@@ -1,6 +1,9 @@
 import './invalidInput.scss'
 import FloatingContainer from "../../../component/floatingContainer/floatingContainter";
 import { JSX, useEffect, useState } from 'react';
+import { motion } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 type Input = {
   valueInput: string[],
@@ -29,26 +32,29 @@ const InvalidInput = ({ valueInput, setNotValid }: Input ) => {
 
   return (
     <FloatingContainer>
-      <div 
+      <motion.div 
         style={{
           borderColor: "var(--red)",
           backgroundColor: "var(--black)"
         }}
         className="invalidContainer w-70 p-5 rounded-lg border flex flex-col gap-2"
+        initial={{ scale: 0.8, opacity: 0.7 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.15 }}
       >
         <div className='flex justify-between items-center'>
-          <p className='text-bold'>Error</p>
+          <p style={{ color: "var(--red)"}} className='font-bold'>Error</p>
 
           <button 
-            className="cancelBtn self-end cursor-pointer w-10 h-10 rounded-full flex justify-center items-center"
+            className="cancelBtn cursor-pointer w-7 h-7 rounded-full flex justify-center items-center"
             onClick={() => setNotValid(false)}
           >
-            X
+            <FontAwesomeIcon icon={faX} />
           </button>
         </div>
 
         {output}
-      </div>
+      </motion.div>
     </FloatingContainer>
   );
 }
