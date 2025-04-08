@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../hooks/typedRedux';
 import HeaderChat from '../headerChat/headerChat';
 import './mainChatPg.scss';
+import RoomChat from '../chatRoom/chatRoom';
+import InputChat from '../inputChat/inputChat';
 
 const MainChatPage = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -14,8 +16,10 @@ const MainChatPage = () => {
   }
 
   return (
-    <div className="mainChatPg">
+    <div className="mainChatPg flex flex-col min-h-full">
       <HeaderChat />
+      <RoomChat />
+      <InputChat />
     </div>
   );
 }

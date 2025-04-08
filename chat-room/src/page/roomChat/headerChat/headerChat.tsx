@@ -16,7 +16,7 @@ const HeaderChat = () => {
   } 
 
   return (
-    <header className='fixed top-0 left-0 flex flex-row justify-between headerChat w-full flex items-center border-b shadow-xl/20 border-solid md:px-7 lg:px-10 py-1 md:py-4 lg:py-5 px-3'>
+    <header className='flex flex-row justify-between headerChat w-full flex items-center border-b border-solid md:px-7 lg:px-10 py-1 md:py-4 lg:py-5 px-3'>
       <div className='flex flex-col'>
         <h1 className='text-md sm:text-lg md:text-xl lg:text-2xl font-bold'>
           {userName}
