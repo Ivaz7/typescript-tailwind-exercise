@@ -36,7 +36,7 @@ const RoomChat = () => {
             {theUserDataName ? "You" : dataName}
           </p>
 
-          <p className={`${theUserDataName ? "[background-color:var(--darkRed)]" : "[background-color:var(--darkPink)]"} break-all p-2 rounded-sm`}>
+          <p className={`${theUserDataName ? "[background-color:var(--darkRed)]" : "[background-color:var(--darkPink)]"} break-normal p-2 rounded-sm`}>
             {message}
           </p>
 
