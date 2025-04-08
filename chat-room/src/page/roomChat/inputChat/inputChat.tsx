@@ -26,6 +26,10 @@ const InputChat = () => {
   }, [message]);
 
   const handleSend = () => {
+    if (message.trim() === "") {
+      return;
+    }
+
     setMessage("");
 
     mutate({
