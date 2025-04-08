@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/typedRedux';
 import './headerChat.scss';
 import { setDeleteIdRoom, setDeleteUserName } from '../../../service/userData';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 const HeaderChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -28,13 +30,10 @@ const HeaderChat = () => {
       </div>
 
       <button
-      style={{
-        backgroundColor: "var(--red)",
-      }}
-        className='py-1 md:py-2 md:px-3 px-4 rounded-sm sm:text-base md:text-lg lg:text-xl font-bold'
+        className='py-1 md:py-2 md:px-3 px-4 cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] rounded-sm sm:text-base md:text-lg lg:text-xl font-bold'
         onClick={handleExit}
       >
-        Exit
+        <FontAwesomeIcon icon={faRightFromBracket} /> Exit
       </button>
     </header>
   );

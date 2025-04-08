@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../hooks/typedRedux';
 import './inputChat.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const InputChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -46,13 +48,13 @@ const InputChat = () => {
       ></textarea>
 
       <button
-        style={{
-          backgroundColor: "var(--red)",
-        }}
-        className='self-end rounded-full h-15 w-15'
+        className='self-end rounded-full cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] flex justify-center items-center h-15 w-15 flex items-center justify-center text-white'
         onClick={handleSend}
       >
-        Send
+        <FontAwesomeIcon 
+          icon={faPaperPlane} 
+          className='text-3xl mr-1'
+        />
       </button>
     </div>
   );
