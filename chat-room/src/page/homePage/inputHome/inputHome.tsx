@@ -2,16 +2,25 @@ import { useState } from 'react';
 import './inputHome.scss';
 import RenderInput from './renderInput';
 import InvalidInput from './invalidInput';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../../hooks/typedRedux';
+import { setIdRoom } from '../../../service/idRoomSlice';
+import { devUsernameFilter } from '../../../utils/devUsernameFilter';
 
 const InputHome = () => {
   const [valueInput, setValueInput] = useState<string[]>(["", ""]);
   const [notValid, setNotValid] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const handleEnter = async () => {
-    if (valueInput[0].trim().length < 1 || valueInput[1].trim().length < 4) {
+  const handleEnter = () => {
+    if (valueInput[0].trim().length < 1 || valueInput[1].trim().length < 4 || devUsernameFilter(valueInput[0])) {
       setNotValid(true);
       return;
     }
+
+    dispatch(setIdRoom(valueInput[1]));
+    navigate("/chat");
   }
 
   return (

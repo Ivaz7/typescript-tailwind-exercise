@@ -4,6 +4,7 @@ import { JSX, useEffect, useState } from 'react';
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { devUsernameFilter } from '../../../utils/devUsernameFilter';
 
 type Input = {
   valueInput: string[],
@@ -19,7 +20,11 @@ const InvalidInput = ({ valueInput, setNotValid }: Input ) => {
         ? <p>
             You need atleas 1 Character for your usename
           </p>
-        : null,
+        : devUsernameFilter(valueInput[0])
+          ? <p>
+              You can't use or contains "IvazDev". Please use another name.
+            </p>
+          : null,
       valueInput[1].trim().length < 4
         ? <p>
             You need atleas 4 Character for your ID room
