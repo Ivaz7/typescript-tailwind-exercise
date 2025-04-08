@@ -39,6 +39,13 @@ const InputChat = () => {
     });
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // mencegah newline biasa
+      handleSend();
+    }
+  };  
+
   return (
     <div 
       style={{
@@ -56,6 +63,7 @@ const InputChat = () => {
         ref={textareaRef}
         value={message} 
         onChange={handleInput}
+        onKeyDown={handleKeyDown}
       ></textarea>
 
       <button
