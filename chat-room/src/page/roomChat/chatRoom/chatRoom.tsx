@@ -3,6 +3,7 @@ import { useGetMessages } from '../../../service/firebase/firebaseQuery';
 import './chatRoom.scss';
 import type { Message } from '../../../service/firebase/firebaseAPI';
 import { useEffect, useRef } from 'react';
+import { timeFormat } from '../../../utils/timeFormat';
 
 const RoomChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -40,7 +41,7 @@ const RoomChat = () => {
           </p>
 
           <p className='self-end'>
-            {timestamp}
+            {timeFormat(timestamp)}
           </p>
         </div>
 
