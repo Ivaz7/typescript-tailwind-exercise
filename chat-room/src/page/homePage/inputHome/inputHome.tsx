@@ -3,30 +3,27 @@ import './inputHome.scss';
 import RenderInput from './renderInput';
 import InvalidInput from './invalidInput';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../../hooks/typedRedux';
-import { setIdRoom, setUserName } from '../../../service/userData';
+import { useAppSelector } from '../../../hooks/typedRedux';
 import { devUsernameFilter } from '../../../utils/devUsernameFilter';
 
 const InputHome = () => {
-  const [valueInput, setValueInput] = useState<string[]>(["", ""]);
+  const userData = useAppSelector((state) => state.userDataSlice);
+  const { idRoom, userName } = userData;
   const [notValid, setNotValid] = useState<boolean>(false);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const handleEnter = () => {
-    if (valueInput[0].trim().length < 1 || valueInput[1].trim().length < 4 || devUsernameFilter(valueInput[0])) {
+    if (userName.trim().length < 1 || idRoom.trim().length < 4 || devUsernameFilter(userName)) {
       setNotValid(true);
       return;
     }
 
-    dispatch(setIdRoom(valueInput[1]));
-    dispatch(setUserName(valueInput[0]));
     navigate("/chat");
   }
 
   return (
     <>
-      {notValid && <InvalidInput valueInput={valueInput} setNotValid={setNotValid} />}
+      {notValid && <InvalidInput setNotValid={setNotValid} />}
 
       <div className="inputHome max-w-[90vw] xs:w-90 sm:w-100 w-80 transition-all duration 150 ease-in-out flex flex-col gap-4 border hover:border-2 hover:shadow-2xl/50 boder-solid rounded-2xl p-6 mt-auto mb-auto">
         <p style={{ color: "var(--pink"}} className='text-center text-lg sm:text-xl md:text-2xl font-bold'>
@@ -37,7 +34,7 @@ const InputHome = () => {
           Chat with anyone, anytime, anywhere — just using a Room ID.
         </p>
 
-        <RenderInput valueInput={valueInput} setValueInput={setValueInput} />
+        <RenderInput />
 
         <button
           style={{ backgroundColor: "var(--red)"}}

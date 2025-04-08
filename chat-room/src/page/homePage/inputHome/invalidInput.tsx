@@ -5,27 +5,30 @@ import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { devUsernameFilter } from '../../../utils/devUsernameFilter';
+import { useAppSelector } from '../../../hooks/typedRedux';
 
 type Input = {
-  valueInput: string[],
   setNotValid: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const InvalidInput = ({ valueInput, setNotValid }: Input ) => {
+const InvalidInput = ({ setNotValid }: Input ) => {
+  const userData = useAppSelector((state) => state.userDataSlice);
+  const { idRoom, userName } = userData;
+
   const [output, setOutput] = useState<(JSX.Element | null)[]>([null, null]);
 
   useEffect(() => {
     const res = [
-      valueInput[0].trim().length < 1 
+      userName.trim().length < 1 
         ? <p>
             You need atleas 1 Character for your usename
           </p>
-        : devUsernameFilter(valueInput[0])
+        : devUsernameFilter(userName)
           ? <p>
               You can't use or contains "IvazDev". Please use another name.
             </p>
           : null,
-      valueInput[1].trim().length < 4
+      idRoom.trim().length < 4
         ? <p>
             You need atleas 4 Character for your ID room
           </p>
@@ -33,7 +36,7 @@ const InvalidInput = ({ valueInput, setNotValid }: Input ) => {
     ]
 
     setOutput(res)
-  }, [valueInput])
+  }, [idRoom, userName])
 
   return (
     <FloatingContainer>

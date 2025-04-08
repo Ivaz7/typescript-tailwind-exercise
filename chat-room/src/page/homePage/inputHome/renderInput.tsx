@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../hooks/typedRedux";
+import { setIdRoom, setUserName } from "../../../service/userData";
 
-type Input = {
-  valueInput: string[],
-  setValueInput: React.Dispatch<React.SetStateAction<string[]>>,
-}
+const RenderInput = () => {
+  const userData = useAppSelector((state) => state.userDataSlice);
+  const { idRoom, userName } = userData;
+  const dispatch = useAppDispatch();
 
-const RenderInput = ({ valueInput, setValueInput }: Input ) => {
   const [clicked, setCliked] = useState<boolean[]>([false, false]);
   const inputRef = useRef<(HTMLInputElement | null)[]>([null, null]);
   const containerRef = useRef<(HTMLDivElement | null)[]>([null, null]);
@@ -17,8 +18,8 @@ const RenderInput = ({ valueInput, setValueInput }: Input ) => {
         containerRef.current[1] && !containerRef.current[1].contains(e.target as Node) 
       ) {
         const newClicked = [
-          valueInput[0] !== "",
-          valueInput[1] !== ""
+          userName !== "",
+          idRoom !== ""
         ];
         setCliked(newClicked);
       }
@@ -29,7 +30,7 @@ const RenderInput = ({ valueInput, setValueInput }: Input ) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [valueInput]);
+  }, [userName, idRoom]);
 
   const inputName: string[] = ["Enter Your Username", "Create or Enter ID"];
 
@@ -37,37 +38,43 @@ const RenderInput = ({ valueInput, setValueInput }: Input ) => {
     setCliked(prev => {
       const updated = [...prev];
 
-      for (let i = 0; i < updated.length; i++) {
-        if (inx === i) {
-          if (updated[inx] !== true) { 
-            updated[inx] = !updated[inx];
-          }
-        } else {
-          if (valueInput[i] === "") {
-            updated[i] = false;
-          }
-        }
+      updated[inx] = true;
+
+      if (inx === 0 && idRoom === "") {
+        updated[1] = false;
+      }
+
+      if (inx === 1 && userName === "") {
+        updated[0] = false;
       }
 
       return updated;
     });
-    inputRef.current[inx]?.focus();
+
+    setTimeout(() => {
+      inputRef.current[inx]?.focus();
+    }, 0);
   }
 
   const handleChange = (inx: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    setValueInput(prev => {
-      const updated = [...prev];
-      updated[inx] = value;
-      return updated;
-    })
+    if (inx === 0) {
+      dispatch(setUserName(value))
+    } else {
+      dispatch(setIdRoom(value))
+    }
   }
 
   const handleFocus = (inx: number) => {
     setCliked(prev => {
       const updated = [...prev];
-      updated[inx] = true;
+      if (inx === 0) {
+        updated[0] = true;
+      } else {
+        updated[1] = true;
+      }
+
       return updated;
     });
   };
@@ -75,9 +82,12 @@ const RenderInput = ({ valueInput, setValueInput }: Input ) => {
   const handleBlur = (inx: number) => {
     setCliked(prev => {
       const updated = [...prev];
-      if (valueInput[inx] === "") {
-        updated[inx] = false;
+      if (inx === 1 && idRoom === "") {
+        updated[1] = false;
+      } else if (inx === 0 && userName === "") {
+        updated[0] = false;
       }
+      
       return updated;
     });
   };
@@ -105,7 +115,7 @@ const RenderInput = ({ valueInput, setValueInput }: Input ) => {
         </p>
 
         <input 
-          value={valueInput[inx]} 
+          value={inx === 0 ? userName : idRoom} 
           onChange={(e) => handleChange(inx, e)} 
           onFocus={() => handleFocus(inx)}
           onBlur={() => handleBlur(inx)}
