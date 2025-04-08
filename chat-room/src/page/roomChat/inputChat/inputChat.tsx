@@ -26,11 +26,13 @@ const InputChat = () => {
   }, [message]);
 
   const handleSend = () => {
+    setMessage("");
+
     mutate({
       idRoom: idRoom,
       message: message,
       username: userName,
-    })
+    });
   }
 
   return (
