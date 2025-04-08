@@ -4,7 +4,7 @@ import RenderInput from './renderInput';
 import InvalidInput from './invalidInput';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../hooks/typedRedux';
-import { setIdRoom } from '../../../service/idRoomSlice';
+import { setIdRoom, setUserName } from '../../../service/userData';
 import { devUsernameFilter } from '../../../utils/devUsernameFilter';
 
 const InputHome = () => {
@@ -20,6 +20,7 @@ const InputHome = () => {
     }
 
     dispatch(setIdRoom(valueInput[1]));
+    dispatch(setUserName(valueInput[0]));
     navigate("/chat");
   }
 
