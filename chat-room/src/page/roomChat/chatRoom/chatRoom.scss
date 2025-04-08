@@ -5,3 +5,17 @@
 .roomChat {
   scrollbar-width: none;
 }
+
+.left-side-triangle {
+  width: 0;
+  height: 0;
+  border-bottom: calc(var(--spacing) * 5) solid transparent;
+  border-right: calc(var(--spacing) * 5) solid var(--pink);
+}
+
+.right-side-triangle {
+  width: 0;
+  height: 0;
+  border-bottom: calc(var(--spacing) * 5) solid transparent;
+  border-left: calc(var(--spacing) * 5) solid var(--red);
+}

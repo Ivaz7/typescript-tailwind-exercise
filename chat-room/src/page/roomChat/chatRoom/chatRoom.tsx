@@ -21,28 +21,41 @@ const RoomChat = () => {
     const theUserDataName: boolean = dataName === realName;
 
     return (
-      <div 
-        key={inx}
-        className={`${theUserDataName ? "self-end" : 'self-start'} w-m-2/3 flex flex-col`}
-      > 
-        <p>
-          {theUserDataName ? "You" : dataName}
-        </p>
+      <div key={inx} className={`${theUserDataName ? "self-end" : 'self-start'} flex flex-row items-start`}>
+        {!theUserDataName && 
+          <div
+            className='left-side-triangle'
+          ></div>
+        }
 
-        <p>
-          {message}
-        </p>
+        <div 
+          className={`${theUserDataName ? "[background-color:var(--red)] rounded-tr-none" : '[background-color:var(--pink)] rounded-tl-none'} w-m-2/3 flex flex-col gap-1 max-w-[90vw] p-3 rounded-lg`}
+        > 
+          <p className='self-start font-bold text-xl'>
+            {theUserDataName ? "You" : dataName}
+          </p>
 
-        <p>
-          {timestamp}
-        </p>
+          <p className={`${theUserDataName ? "[background-color:var(--darkRed)]" : "[background-color:var(--darkPink)]"} break-all p-2 rounded-sm`}>
+            {message}
+          </p>
+
+          <p className='self-end'>
+            {timestamp}
+          </p>
+        </div>
+
+        {theUserDataName && 
+          <div
+            className='right-side-triangle'
+          ></div>
+        }
       </div>
     )
   })
 
   return (
     <div className='grow overflow-y-auto flex-1'>
-      <div className='roomChat min-h-full max-h-full overflow-y-auto flex flex-col'>
+      <div className='roomChat min-h-full max-h-full overflow-y-auto flex flex-col gap-3 p-2'>
         {renderMessages}
         <div ref={messagesEndRef} />
       </div>
