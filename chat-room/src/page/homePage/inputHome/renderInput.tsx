@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/typedRedux";
 import { setIdRoom, setUserName } from "../../../service/userData";
+import { motion } from "framer-motion";
+import './renderInput.scss';
 
 const RenderInput = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -10,6 +12,23 @@ const RenderInput = () => {
   const [clicked, setCliked] = useState<boolean[]>([false, false]);
   const inputRef = useRef<(HTMLInputElement | null)[]>([null, null]);
   const containerRef = useRef<(HTMLDivElement | null)[]>([null, null]);
+  const [showSayHi, setShowSayHi] = useState(false); 
+
+  useEffect(() => {
+    setCliked([
+      userName !== "",
+      idRoom !== ""
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSayHi(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -24,9 +43,9 @@ const RenderInput = () => {
         setCliked(newClicked);
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -69,16 +88,11 @@ const RenderInput = () => {
   const handleFocus = (inx: number) => {
     setCliked(prev => {
       const updated = [...prev];
-      if (inx === 0) {
-        updated[0] = true;
-      } else {
-        updated[1] = true;
-      }
-
+      updated[inx] = true;
       return updated;
     });
   };
-  
+
   const handleBlur = (inx: number) => {
     setCliked(prev => {
       const updated = [...prev];
@@ -87,7 +101,6 @@ const RenderInput = () => {
       } else if (inx === 0 && userName === "") {
         updated[0] = false;
       }
-      
       return updated;
     });
   };
@@ -98,7 +111,7 @@ const RenderInput = () => {
         key={inx}
         ref={(el) => {containerRef.current[inx] = el}} 
         onClick={() => handleClick(inx)}
-        className={`${clicked[inx] ? "outline-2 outline-offset-2" : ""} h-12 sm:h-13 md:h-14 relative flex flex-col justify-end gap-2 border border-solid rounded-sm cursor-text`}
+        className={`${clicked[inx] ? "outline-2 outline-offset-2" : ""} relative h-12 sm:h-13 md:h-14 relative flex flex-col justify-end gap-2 border border-solid rounded-sm cursor-text`}
         style={{ borderColor: "var(--white)", outlineColor: "var(--pink)" }} 
       >
         <p
@@ -123,11 +136,24 @@ const RenderInput = () => {
           className='w-full py-1 px-2 focus:outline-none' 
           type="text" 
         />
+
+        {inx === 1 && showSayHi &&
+          <motion.button 
+            initial={{ scale: 0.8, rotate: 270 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
+            className="btnComment absolute right-2 cursor-pointer top-1/2 -translate-y-1/2 duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] p-2 rounded-md rounded-l-none"
+            onClick={() => dispatch(setIdRoom("0001"))}
+          >
+            <p>Say Hi!</p>
+            <p>Using 0001</p>
+          </motion.button>
+        }
       </div>
     )
   })
 
   return renderInput;
 }
- 
+
 export default RenderInput;
