@@ -1,5 +1,5 @@
-import { getDatabase, ref, push, serverTimestamp, DatabaseReference } from "firebase/database";
-const db = getDatabase();
+import { ref, push, serverTimestamp, DatabaseReference } from "firebase/database";
+import { database } from "./firebaseConfig";
 
 export interface userData {
   idRoom: string,
@@ -8,7 +8,7 @@ export interface userData {
 }
 
 export const sendMessage = (data: userData): Promise<DatabaseReference> => {
-  const chatRef = ref(db, `chats/${data.idRoom}`);
+  const chatRef = ref(database, `chats/${data.idRoom}`);
   const result = push(chatRef, {
     message: data.message,
     username: data.username,

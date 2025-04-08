@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../../hooks/typedRedux';
 import './inputChat.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { useSendMessage } from '../../../service/firebase/firebaseQuery';
 
 const InputChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
   const { idRoom, userName } = userData;
+  const { mutate, isPending } = useSendMessage();
 
   const [message, setMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -24,8 +26,11 @@ const InputChat = () => {
   }, [message]);
 
   const handleSend = () => {
-    console.log(idRoom, "idRoom")
-    console.log(userName, "userName")
+    mutate({
+      idRoom: idRoom,
+      message: message,
+      username: userName,
+    })
   }
 
   return (
@@ -52,7 +57,7 @@ const InputChat = () => {
         onClick={handleSend}
       >
         <FontAwesomeIcon 
-          icon={faPaperPlane} 
+          icon={isPending ? faSpinner : faPaperPlane} 
           className='text-3xl mr-1'
         />
       </button>
