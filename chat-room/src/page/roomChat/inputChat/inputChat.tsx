@@ -38,14 +38,14 @@ const InputChat = () => {
       style={{
         borderColor: "var(--red)",
       }}
-      className='inputChat border-t flex flex-row justify-between gap-5 md:px-7 lg:px-10 py-1 md:py-4 lg:py-5 px-3'
+      className='inputChat border-t flex flex-row items-center gap-5 md:px-7 lg:px-10 py-3 md:py-4 lg:py-5 px-3'
     >
       <textarea
         style={{
           borderColor: "var(--white)",
           outlineColor: "var(--pink)",
         }} 
-        className='grow p-2 border overflow-hidden resize-none rounded-sm focus:outline-offset-2 focus:outline-2'
+        className='w-full p-2 border overflow-hidden resize-none rounded-sm focus:outline-offset-2 focus:outline-2'
         rows={1}
         ref={textareaRef}
         value={message} 
@@ -53,13 +53,10 @@ const InputChat = () => {
       ></textarea>
 
       <button
-        className='self-end rounded-full cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] flex justify-center items-center h-15 w-15 flex items-center justify-center text-white'
+        className='rounded-sm cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] flex justify-center items-center gap-2 p-2'
         onClick={handleSend}
       >
-        <FontAwesomeIcon 
-          icon={isPending ? faSpinner : faPaperPlane} 
-          className='text-3xl mr-1'
-        />
+        <FontAwesomeIcon icon={isPending ? faSpinner : faPaperPlane} /> {!isPending ? "Send" : "Wait"}
       </button>
     </div>
   );
