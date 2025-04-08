@@ -16,7 +16,7 @@ const MainChatPage = () => {
   }
 
   return (
-    <div className="mainChatPg flex flex-col min-h-full">
+    <div className="mainChatPg flex flex-col h-full">
       <HeaderChat />
       <RoomChat />
       <InputChat />

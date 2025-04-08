@@ -2,13 +2,18 @@ import { useAppSelector } from '../../../hooks/typedRedux';
 import { useGetMessages } from '../../../service/firebase/firebaseQuery';
 import './chatRoom.scss';
 import type { Message } from '../../../service/firebase/firebaseAPI';
+import { useEffect, useRef } from 'react';
 
 const RoomChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
   const { idRoom, userName: realName }= userData;
   const { data: messages } = useGetMessages(idRoom);
 
-  console.log(messages)
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const renderMessages = messages?.map((val: Message, inx: number) => {
     const { message, timestamp, username: dataName } = val;
@@ -36,9 +41,10 @@ const RoomChat = () => {
   })
 
   return (
-    <div className='grow'>
-      <div className='roomChat min-h-full max-h-full flex flex-col'>
+    <div className='grow overflow-y-auto flex-1'>
+      <div className='roomChat min-h-full max-h-full overflow-y-auto flex flex-col'>
         {renderMessages}
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );
