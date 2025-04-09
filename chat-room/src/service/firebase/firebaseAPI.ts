@@ -25,7 +25,7 @@ export const sendMessage = (data: userData): Promise<DatabaseReference> => {
     timestamp: serverTimestamp(),
   };
 
-  if (data.reply) {
+  if (data.reply?.id !== "" && data.reply?.message !== "" && data.reply?.username !== "") {
     payload.reply = data.reply;
   }
 
