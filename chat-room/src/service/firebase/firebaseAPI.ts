@@ -1,4 +1,4 @@
-import { ref, push, serverTimestamp, DatabaseReference, onValue, off, DataSnapshot } from "firebase/database";
+import { ref, push, serverTimestamp, DatabaseReference, onValue, DataSnapshot } from "firebase/database";
 import { database } from "./firebaseConfig";
 import type { Reply } from "../replySlice";
 
@@ -49,10 +49,9 @@ export const getMessages = (idRoom: string): Promise<Message[]> => {
       } else {
         resolve([]);
       }
-
-      off(chatRef, 'value', callback);
     };
 
     onValue(chatRef, callback);
   });
 };
+

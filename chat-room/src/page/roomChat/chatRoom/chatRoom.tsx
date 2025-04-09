@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../../hooks/typedRedux';
-import { useGetMessages } from '../../../service/firebase/firebaseQuery';
+import { useGetMessages, useSubscribeMessages } from '../../../service/firebase/firebaseQuery';
 import './chatRoom.scss';
 import type { Message } from '../../../service/firebase/firebaseAPI';
 import { useEffect, useRef } from 'react';
@@ -12,6 +12,8 @@ const RoomChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
   const { idRoom, userName: realName }= userData;
   const dispatch = useAppDispatch();
+
+  useSubscribeMessages(idRoom);
   const { data: messages } = useGetMessages(idRoom);
 
   const messageRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
