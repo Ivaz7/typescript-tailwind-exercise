@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faSpinner, faX } from '@fortawesome/free-solid-svg-icons';
 import { useSendMessage } from '../../../service/firebase/firebaseQuery';
 import { setDeleteReply } from '../../../service/replySlice';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const InputChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -67,34 +68,42 @@ const InputChat = () => {
       className='inputChat border-t flex flex-row items-center gap-5 md:px-7 lg:px-10 py-3 md:py-4 lg:py-5 px-3'
     > 
       <div className='flex w-full flex-col'>
-        {reply.id !== "" && reply.message !== "" && reply.username !== "" &&
-          <div className='[background-color:var(--red)] p-2 rounded-lg'>
-            <div className='[background-color:var(--darkPink)] p-2 rounded-sm flex flex-col gap-1'>
-              <div className='flex flex-row items-center justify-between'>
-                <p className='font-bold text-lg'>
-                  Reply
-                </p>
+        <AnimatePresence>
+          {reply.id !== "" && reply.message !== "" && reply.username !== "" && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.15, ease: "easeInOut" }}
+              className='[background-color:var(--red)] overflow-hidden p-2 rounded-lg'
+            >
+              <div className='[background-color:var(--darkPink)] p-2 rounded-sm flex flex-col gap-1'>
+                <div className='flex flex-row items-center justify-between'>
+                  <p className='font-bold text-lg'>
+                    Reply
+                  </p>
 
-                <button
-                  className='cursor-pointer h-7 w-7 rounded-full flex justify-center items-center [background-color:transparent] hover:[background-color:var(--pink)]'
-                  onClick={handleDeleteReply}
-                >  
-                  <FontAwesomeIcon icon={faX} className='text-lg'/>
-                </button>
+                  <button
+                    className='cursor-pointer h-7 w-7 rounded-full flex justify-center items-center [background-color:transparent] hover:[background-color:var(--pink)]'
+                    onClick={handleDeleteReply}
+                  >  
+                    <FontAwesomeIcon icon={faX} className='text-lg'/>
+                  </button>
+                </div>
+
+                <div className='flex flex-col'>
+                  <p className='font-bold text-md'>
+                    {reply.username}
+                  </p>
+
+                  <p className='text-sm'>
+                    {reply.message}
+                  </p>
+                </div>
               </div>
-
-              <div className='flex flex-col'>
-                <p className='font-bold text-md'>
-                  {reply.username}
-                </p>
-
-                <p className='text-sm'>
-                  {reply.message}
-                </p>
-              </div>
-            </div>
-          </div>
-        }
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <textarea
           style={{
@@ -111,7 +120,7 @@ const InputChat = () => {
       </div>
 
       <button
-        className='rounded-sm cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] flex justify-center items-center gap-2 p-2'
+        className='self-end rounded-sm cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] flex justify-center items-center gap-2 p-2'
         onClick={handleSend}
       >
         <FontAwesomeIcon icon={isPending ? faSpinner : faPaperPlane} /> {!isPending ? "Send" : "Wait"}
