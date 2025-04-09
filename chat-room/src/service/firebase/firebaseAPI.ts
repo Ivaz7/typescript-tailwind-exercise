@@ -1,4 +1,4 @@
-import { ref, push, serverTimestamp, DatabaseReference, get, child } from "firebase/database";
+import { ref, push, serverTimestamp, DatabaseReference, onValue, off } from "firebase/database";
 import { database } from "./firebaseConfig";
 
 export interface userData {
@@ -25,17 +25,22 @@ export const sendMessage = (data: userData): Promise<DatabaseReference> => {
   return Promise.resolve(result);
 };
 
-export const getMessages = async (idRoom: string): Promise<Message[]> => {
-  const chatRef = ref(database);
-  const snapshot = await get(child(chatRef, `chats/${idRoom}`));
+export const getMessages = (idRoom: string): Promise<Message[]> => {
+  return new Promise((resolve) => {
+    const chatRef = ref(database, `chats/${idRoom}`);
 
-  if (snapshot.exists()) {
-    const data = snapshot.val();
-    return Object.entries(data).map(([key, value]) => ({
-      id: key,
-      ...(value as Omit<Message, 'id'>),
-    }));
-  } else {
-    return [];
-  }
+    const listener = onValue(chatRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const parsed = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...(value as Omit<Message, 'id'>),
+        }));
+        resolve(parsed);
+      } else {
+        resolve([]);
+      }
+      off(chatRef, 'value', listener); 
+    });
+  });
 };
