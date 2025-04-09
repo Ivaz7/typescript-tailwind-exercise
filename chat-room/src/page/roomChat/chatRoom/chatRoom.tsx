@@ -1,32 +1,67 @@
-import { useAppSelector } from '../../../hooks/typedRedux';
+import { useAppDispatch, useAppSelector } from '../../../hooks/typedRedux';
 import { useGetMessages } from '../../../service/firebase/firebaseQuery';
 import './chatRoom.scss';
 import type { Message } from '../../../service/firebase/firebaseAPI';
 import { useEffect, useRef } from 'react';
 import { timeFormat } from '../../../utils/timeFormat';
+import { setReply } from '../../../service/replySlice';
 
 const RoomChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
   const { idRoom, userName: realName }= userData;
+  const dispatch = useAppDispatch();
   const { data: messages } = useGetMessages(idRoom);
 
+  const messageRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const scrollToMessage = (id: string) => {
+    const el = messageRefs.current[id];
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };  
+
+  const handleSetReply = (id: string, message: string, dataName: string) => {
+    dispatch(setReply({
+      id,
+      message,
+      username: dataName,
+    }))
+  }
+
   const renderMessages = messages?.map((val: Message, inx: number) => {
-    const { message, timestamp, username: dataName } = val;
+    const { reply, id, message, timestamp, username: dataName } = val;
 
     const theUserDataName: boolean = dataName === realName;
 
+    const buttonReply = (
+      <button
+        className=''
+        onClick={() => handleSetReply(id, message, dataName)}
+      >
+        Reply
+      </button>
+    )
+
     return (
-      <div key={inx} className={`${theUserDataName ? "self-end" : 'self-start'} flex flex-row items-start`}>
+      <div 
+        key={inx} 
+        className={`${theUserDataName ? "self-end" : 'self-start'} flex flex-row items-start`}
+        ref={(el) => {messageRefs.current[id] = el}}
+      >
         {!theUserDataName && 
           <div
             className='left-side-triangle'
           ></div>
+        }
+
+        {theUserDataName && 
+          buttonReply
         }
 
         <div 
@@ -41,7 +76,7 @@ const RoomChat = () => {
           </p>
 
           <p className='self-end'>
-            {timeFormat(timestamp)}
+            {typeof timestamp === 'number' ? timeFormat(timestamp) : '-'}
           </p>
         </div>
 
@@ -49,6 +84,20 @@ const RoomChat = () => {
           <div
             className='right-side-triangle'
           ></div>
+        }
+
+        {!theUserDataName && 
+          buttonReply
+        }
+
+        {reply &&
+          <div
+            className=''
+            onClick={() => scrollToMessage(reply.id)}
+          >
+            {reply?.message}
+            {reply?.username}
+          </div>
         }
       </div>
     )

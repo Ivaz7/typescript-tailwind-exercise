@@ -7,6 +7,7 @@ import { useSendMessage } from '../../../service/firebase/firebaseQuery';
 
 const InputChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
+  const reply = useAppSelector((state) => state.replySlice.reply);
   const { idRoom, userName } = userData;
   const { mutate, isPending } = useSendMessage();
 
@@ -38,6 +39,7 @@ const InputChat = () => {
       idRoom: idRoom,
       message: message,
       username: userName,
+      reply: reply,
     });
   }
 
@@ -57,19 +59,28 @@ const InputChat = () => {
         borderColor: "var(--red)",
       }}
       className='inputChat border-t flex flex-row items-center gap-5 md:px-7 lg:px-10 py-3 md:py-4 lg:py-5 px-3'
-    >
-      <textarea
-        style={{
-          borderColor: "var(--white)",
-          outlineColor: "var(--pink)",
-        }} 
-        className='w-full p-2 border overflow-hidden resize-none rounded-sm focus:outline-offset-2 focus:outline-2'
-        rows={1}
-        ref={textareaRef}
-        value={message} 
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
-      ></textarea>
+    > 
+      <div className='flex w-full flex-col'>
+        {reply &&
+          <div>
+            {reply.message}
+            {reply.username}
+          </div>
+        }
+
+        <textarea
+          style={{
+            borderColor: "var(--white)",
+            outlineColor: "var(--pink)",
+          }} 
+          className='w-full p-2 border overflow-hidden resize-none rounded-sm focus:outline-offset-2 focus:outline-2'
+          rows={1}
+          ref={textareaRef}
+          value={message} 
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+        ></textarea>
+      </div>
 
       <button
         className='rounded-sm cursor-pointer duration-150 ease-in-out [background-color:var(--red)] hover:[background-color:var(--lightRed)] flex justify-center items-center gap-2 p-2'
