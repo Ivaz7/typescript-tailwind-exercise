@@ -13,6 +13,8 @@ const InputChat = () => {
   const [message, setMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
@@ -40,8 +42,11 @@ const InputChat = () => {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // mencegah newline biasa
+    const isEnter = e.key === "Enter";
+    const isShift = e.shiftKey;
+  
+    if (!isMobile && isEnter && !isShift) {
+      e.preventDefault();
       handleSend();
     }
   };  
