@@ -5,6 +5,8 @@ import type { Message } from '../../../service/firebase/firebaseAPI';
 import { useEffect, useRef } from 'react';
 import { timeFormat } from '../../../utils/timeFormat';
 import { setReply } from '../../../service/replySlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faReply } from '@fortawesome/free-solid-svg-icons';
 
 const RoomChat = () => {
   const userData = useAppSelector((state) => state.userDataSlice);
@@ -41,10 +43,10 @@ const RoomChat = () => {
 
     const buttonReply = (
       <button
-        className=''
+        className='m-2 cursor-pointer rounded-full bg-color-transparent duration-150 ease-in-out h-6 w-6 hover:[background-color:var(--gray)]'
         onClick={() => handleSetReply(id, message, dataName)}
       >
-        Reply
+        <FontAwesomeIcon icon={faReply} />
       </button>
     )
 
