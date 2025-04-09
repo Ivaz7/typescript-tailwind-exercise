@@ -66,20 +66,39 @@ const RoomChat = () => {
           buttonReply
         }
 
-        <div 
-          className={`${theUserDataName ? "[background-color:var(--red)] rounded-tr-none" : '[background-color:var(--pink)] rounded-tl-none'} w-m-2/3 flex flex-col gap-1 max-w-[90vw] p-3 rounded-lg`}
-        > 
-          <p className='self-start font-bold text-xl'>
-            {theUserDataName ? "You" : dataName}
-          </p>
+        <div className='flex flex-col'>
+          {reply &&
+            <button
+              className={`cursor-pointer ${theUserDataName ? "[background-color:var(--red)] rounded-tl-lg" : '[background-color:var(--pink)] rounded-tr-lg'} flex flex-col p-3 pb-0 duration-150 ease-in-out hover:opacity-50`}
+              onClick={() => scrollToMessage(reply.id)}
+            >
+              <div className={`${theUserDataName ? "[background-color:var(--darkPink)]" : "[background-color:var(--darkRed)]"} break-normal p-2 rounded-sm flex flex-col items-start`}>  
+                <p className='font-bold text-md'>
+                  {reply?.username}
+                </p>
 
-          <p className={`${theUserDataName ? "[background-color:var(--darkRed)]" : "[background-color:var(--darkPink)]"} break-normal p-2 rounded-sm`}>
-            {message}
-          </p>
+                <p className='text-sm'>
+                  {reply?.message}
+                </p>
+              </div>
+            </button>
+          }
 
-          <p className='self-end'>
-            {typeof timestamp === 'number' ? timeFormat(timestamp) : '-'}
-          </p>
+          <div 
+            className={`${theUserDataName ? "[background-color:var(--red)] rounded-tr-none" : '[background-color:var(--pink)] rounded-tl-none'} ${reply ? "rounded-t-none pt-0" : ""} w-m-2/3 flex flex-col gap-1 max-w-[90vw] p-3 rounded-lg`}
+          > 
+            <p className='self-start font-bold text-xl'>
+              {theUserDataName ? "You" : dataName}
+            </p>
+
+            <p className={`${theUserDataName ? "[background-color:var(--darkRed)]" : "[background-color:var(--darkPink)]"} break-normal p-2 rounded-sm`}>
+              {message}
+            </p>
+
+            <p className='self-end'>
+              {typeof timestamp === 'number' ? timeFormat(timestamp) : '-'}
+            </p>
+          </div>
         </div>
 
         {theUserDataName && 
@@ -90,16 +109,6 @@ const RoomChat = () => {
 
         {!theUserDataName && 
           buttonReply
-        }
-
-        {reply &&
-          <div
-            className=''
-            onClick={() => scrollToMessage(reply.id)}
-          >
-            {reply?.message}
-            {reply?.username}
-          </div>
         }
       </div>
     )
