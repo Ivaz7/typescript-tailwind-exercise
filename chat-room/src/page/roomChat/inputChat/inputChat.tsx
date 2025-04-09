@@ -35,7 +35,8 @@ const InputChat = () => {
     if (message.trim() === "") {
       return;
     }
-
+    
+    dispatch(setDeleteReply());
     setMessage("");
 
     mutate({
