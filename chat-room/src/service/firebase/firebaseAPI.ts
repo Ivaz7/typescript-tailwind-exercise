@@ -1,4 +1,4 @@
-import { ref, push, serverTimestamp, DatabaseReference, onValue, off } from "firebase/database";
+import { ref, push, serverTimestamp, DatabaseReference, onValue, off, DataSnapshot } from "firebase/database";
 import { database } from "./firebaseConfig";
 import type { Reply } from "../replySlice";
 
@@ -38,10 +38,10 @@ export const getMessages = (idRoom: string): Promise<Message[]> => {
   return new Promise((resolve) => {
     const chatRef = ref(database, `chats/${idRoom}`);
 
-    const listener = onValue(chatRef, (snapshot) => {
+    const callback = (snapshot: DataSnapshot) => {
       const data = snapshot.val();
       if (data) {
-        const parsed = Object.entries(data).map(([key, value]) => ({
+        const parsed: Message[] = Object.entries(data).map(([key, value]) => ({
           id: key,
           ...(value as Omit<Message, 'id'>),
         }));
@@ -49,7 +49,10 @@ export const getMessages = (idRoom: string): Promise<Message[]> => {
       } else {
         resolve([]);
       }
-      off(chatRef, 'value', listener); 
-    });
+
+      off(chatRef, 'value', callback);
+    };
+
+    onValue(chatRef, callback);
   });
 };
