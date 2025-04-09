@@ -37,6 +37,6 @@ export const replySlice = createSlice({
   }
 })
 
-export const { setReply } = replySlice.actions;
+export const { setReply, setDeleteReply } = replySlice.actions;
 
 export default replySlice.reducer;
